@@ -1,9 +1,4 @@
-/**
- * Estado concreto: el carrito ya fue pagado.
- * Es un estado final del flujo: no admite agregar productos
- * ni volver a pagar. Solo se puede vaciar para iniciar
- * una nueva compra (transición de vuelta a Vacio).
- */
+
 public class Pagado implements EstadoCarrito {
 
     @Override

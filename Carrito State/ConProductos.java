@@ -1,15 +1,11 @@
-/**
- * Estado concreto: el carrito tiene al menos un producto.
- * Permite seguir agregando productos (se mantiene en el mismo estado),
- * o pagar, lo que provoca la transición a Pagado.
- */
+
 public class ConProductos implements EstadoCarrito {
 
     @Override
     public void agregarProducto(Carrito carrito, String producto) {
         carrito.getProductos().add(producto);
         System.out.println("Se agregó \"" + producto + "\" al carrito.");
-        // Se mantiene en el mismo estado: ConProductos
+        
     }
 
     @Override

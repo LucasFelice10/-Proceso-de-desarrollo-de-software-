@@ -1,19 +1,13 @@
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Context.
- * Mantiene una referencia al estado actual (EstadoCarrito) y delega
- * en él las operaciones. El propio carrito no decide qué hacer según
- * su estado: eso lo resuelve la clase de estado concreta.
- */
+
 public class Carrito {
 
     private EstadoCarrito estado;
     private final List<String> productos = new ArrayList<>();
 
     public Carrito() {
-        // Todo carrito nace en estado Vacio
         this.estado = new Vacio();
     }
 

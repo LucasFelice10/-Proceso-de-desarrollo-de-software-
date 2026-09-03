@@ -1,8 +1,4 @@
-/**
- * Estado concreto: el carrito no tiene productos.
- * Desde aquí solo es válido agregar un producto,
- * lo que provoca la transición a ConProductos.
- */
+
 public class Vacio implements EstadoCarrito {
 
     @Override
