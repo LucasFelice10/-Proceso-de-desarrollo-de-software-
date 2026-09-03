@@ -1,8 +1,5 @@
 > **Materia:** Proceso y Desarrollo de Software - UADE  
 > **Grupo:** JAVA Team  
-
-Una breve descripción de uno o dos párrafos sobre el sistema. Explica qué problema resuelve, a quién está dirigido y cuál es el objetivo principal del proyecto desarrollado en la cursada.
-
 ---
 
 ## 👥 Miembros del Equipo
