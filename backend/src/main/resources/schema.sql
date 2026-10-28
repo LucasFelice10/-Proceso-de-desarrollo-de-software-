@@ -44,7 +44,7 @@ CREATE TABLE pedido_reposicion (
 CREATE TABLE movimiento (
     id       BIGINT AUTO_INCREMENT PRIMARY KEY,
     sku      VARCHAR(20) NOT NULL REFERENCES producto (sku),
-    tipo     VARCHAR(20) NOT NULL CHECK (tipo IN ('VENTA', 'RECEPCION')),
+    tipo     ENUM ('VENTA', 'RECEPCION') NOT NULL,
     cantidad INT         NOT NULL CHECK (cantidad > 0),
     fecha    TIMESTAMP   NOT NULL
 );
