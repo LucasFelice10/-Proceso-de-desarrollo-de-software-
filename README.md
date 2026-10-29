@@ -69,6 +69,28 @@ Diagramas: [UML de clases](docs/uml-clases.md) · [Arquitectura en capas](docs/a
 | POST | `/api/pedidos/one-click/{sku}` | Generar pedido y mensaje al proveedor |
 | GET | `/api/pedidos` | Listar pedidos con su estado |
 | POST | `/api/pedidos/{id}/avanzar` | Avanzar el estado de un pedido |
+| POST | `/api/pedidos/{id}/simular-demora` | Dejar un pedido `ENVIADO` como `DEMORADO` (para la demo) |
+| GET | `/api/proveedores` | Listar proveedores con sus ofertas |
+| GET | `/api/proveedores/{id}` | Obtener un proveedor |
+
+### Contrato
+
+| Endpoint | Cuerpo de la solicitud | Respuesta | Códigos |
+| :--- | :--- | :--- | :--- |
+| `GET /api/productos` | - | Lista de `{sku, nombre, stockActual, umbralCritico}` | 200 |
+| `POST /api/ventas` | `{"sku": "CERV-X", "cantidad": 10}` | `{sku, cantidad, stockActual, umbralCruzado, alertaDisparada}` | 201 / 400 |
+| `GET /api/eventos` | - | Stream SSE con los eventos `stock` y `alerta` | 200 |
+| `PUT /api/estrategia` | `{"perfil": "PRECIO" \| "VELOCIDAD" \| "BALANCEADA"}` | `{"perfil": "..."}` | 200 / 400 |
+| `POST /api/pedidos/one-click/{sku}` | - | `{pedido, proveedor, mensaje, link}` | 201 / 404 |
+| `GET /api/pedidos` | - | Lista de pedidos con su `estado` | 200 |
+| `POST /api/pedidos/{id}/avanzar` | - | Pedido con el estado nuevo | 200 / 404 |
+| `POST /api/pedidos/{id}/simular-demora` | - | Pedido `DEMORADO` | 200 / 404 |
+
+Los errores devuelven `{"error": "mensaje"}`. Casos que no están en el contrato original: `409` si el pedido ya fue recibido, si se simula una demora sobre un pedido que no está `ENVIADO` o si el One-Click se pide cuando no hace falta reponer. Una venta de un SKU inexistente responde `400`.
+
+El front de Vite (`http://localhost:5173`) está habilitado por CORS; se puede cambiar con la propiedad `nexus.cors.origenes`.
+
+Detalle del ciclo del pedido, diagramas de secuencia y de estados: [State y API](docs/state-api.md)
 
 ---
 
