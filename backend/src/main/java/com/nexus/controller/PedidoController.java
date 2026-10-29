@@ -33,4 +33,15 @@ public class PedidoController {
     public EnvioOneClick oneClick(@PathVariable String sku) {
         return pedidoService.oneClick(sku);
     }
+
+    @PostMapping("/{id}/avanzar")
+    public PedidoReposicion avanzar(@PathVariable long id) {
+        return pedidoService.avanzar(id);
+    }
+
+    /** Solo para la demo: deja el pedido DEMORADO sin esperar los dos días reales. */
+    @PostMapping("/{id}/simular-demora")
+    public PedidoReposicion simularDemora(@PathVariable long id) {
+        return pedidoService.simularDemora(id);
+    }
 }

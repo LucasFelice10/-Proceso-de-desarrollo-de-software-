@@ -9,9 +9,11 @@ import com.nexus.model.PedidoReposicion;
 import com.nexus.model.Producto;
 import com.nexus.model.Proveedor;
 import com.nexus.patterns.observer.InventarioObservable;
+import com.nexus.patterns.state.Enviado;
 import com.nexus.patterns.state.EstadoPedido;
 import com.nexus.patterns.state.Recibido;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -84,6 +86,25 @@ public class PedidoService {
         if (siguiente instanceof Recibido) {
             recibir(pedido);
         }
+        pedidoDAO.actualizar(pedido);
+        return pedido;
+    }
+
+    /**
+     * Para la demo: retrocede la fecha de envío más allá del plazo y deja el pedido DEMORADO sin
+     * esperar los días reales.
+     *
+     * @throws NoSuchElementException si el pedido no existe
+     * @throws IllegalStateException si el pedido no está ENVIADO
+     */
+    public synchronized PedidoReposicion simularDemora(long id) {
+        PedidoReposicion pedido = buscar(id);
+        if (!Enviado.NOMBRE.equals(pedido.getEstado())) {
+            throw new IllegalStateException("Solo un pedido ENVIADO puede demorarse, el pedido " + id
+                    + " está " + pedido.getEstado());
+        }
+        pedido.setFechaEnvio(LocalDateTime.now().minusDays(Enviado.DIAS_DEMORA + 1));
+        EstadoPedido.de(pedido.getEstado()).evaluar(pedido);
         pedidoDAO.actualizar(pedido);
         return pedido;
     }
