@@ -2,13 +2,17 @@ package com.nexus.service;
 
 import com.nexus.dao.IMovimientoDAO;
 import com.nexus.dao.IPedidoDAO;
+import com.nexus.dao.IProductoDAO;
 import com.nexus.dao.IProveedorDAO;
 import com.nexus.model.Movimiento;
+import com.nexus.model.PedidoReposicion;
+import com.nexus.model.Producto;
 
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * Lógica de reposición: cuánto se vende por día, cuánto tardan en llegar los pedidos y, con eso,
@@ -22,18 +26,24 @@ public class ReposicionService {
     /** z para un nivel de servicio del 95%: el stock de seguridad alcanza en 95 de cada 100 reposiciones. */
     public static final double Z_NIVEL_SERVICIO_95 = 1.65;
 
+    /** Días de venta que cubre cada pedido por encima del ROP: se repone una vez por semana. */
+    public static final int DIAS_COBERTURA = 7;
+
+    private final IProductoDAO productoDAO;
     private final IProveedorDAO proveedorDAO;
     private final IPedidoDAO pedidoDAO;
     private final IMovimientoDAO movimientoDAO;
     private final double z;
 
-    public ReposicionService(IProveedorDAO proveedorDAO, IPedidoDAO pedidoDAO, IMovimientoDAO movimientoDAO) {
-        this(proveedorDAO, pedidoDAO, movimientoDAO, Z_NIVEL_SERVICIO_95);
+    public ReposicionService(IProductoDAO productoDAO, IProveedorDAO proveedorDAO, IPedidoDAO pedidoDAO,
+                             IMovimientoDAO movimientoDAO) {
+        this(productoDAO, proveedorDAO, pedidoDAO, movimientoDAO, Z_NIVEL_SERVICIO_95);
     }
 
     /** @param z factor del nivel de servicio (1.65 = 95%, 2.33 = 99%) */
-    public ReposicionService(IProveedorDAO proveedorDAO, IPedidoDAO pedidoDAO, IMovimientoDAO movimientoDAO,
-                             double z) {
+    public ReposicionService(IProductoDAO productoDAO, IProveedorDAO proveedorDAO, IPedidoDAO pedidoDAO,
+                             IMovimientoDAO movimientoDAO, double z) {
+        this.productoDAO = productoDAO;
         this.proveedorDAO = proveedorDAO;
         this.pedidoDAO = pedidoDAO;
         this.movimientoDAO = movimientoDAO;
@@ -94,6 +104,33 @@ public class ReposicionService {
      */
     public int puntoDePedido(String sku) {
         return (int) Math.round(ventaDiariaPromedio(sku) * leadTimePromedio(sku) + stockSeguridad(sku));
+    }
+
+    /**
+     * Cuánto pedir ahora. Mira la posición de inventario (stock físico más lo pedido que todavía no
+     * llegó) para no pedir dos veces lo mismo: si está por encima del ROP devuelve 0; si no, completa
+     * hasta el ROP más {@value #DIAS_COBERTURA} días de venta.
+     *
+     * @throws NoSuchElementException si el producto no existe
+     */
+    public int cantidadSugerida(String sku) {
+        Producto producto = productoDAO.buscarPorSku(sku)
+                .orElseThrow(() -> new NoSuchElementException("Producto inexistente: " + sku));
+        int puntoDePedido = puntoDePedido(sku);
+        int posicion = producto.getStockActual() + unidadesEnCamino(sku);
+        if (posicion > puntoDePedido) {
+            return 0;
+        }
+        int nivelObjetivo = puntoDePedido + (int) Math.round(ventaDiariaPromedio(sku) * DIAS_COBERTURA);
+        return nivelObjetivo - posicion;
+    }
+
+    /** Unidades de pedidos generados, enviados o demorados que todavía no sumaron stock. */
+    private int unidadesEnCamino(String sku) {
+        return pedidoDAO.listarPorProducto(sku).stream()
+                .filter(p -> !"RECIBIDO".equals(p.getEstado()))
+                .mapToInt(PedidoReposicion::getCantidad)
+                .sum();
     }
 
     /** Lead time real de cada entrega recibida, en días. */

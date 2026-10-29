@@ -17,11 +17,13 @@ public class GeneradorPedidos {
 
     private final IProveedorDAO proveedorDAO;
     private final IPedidoDAO pedidoDAO;
+    private final ReposicionService reposicion;
     private volatile IEstrategiaProveedor estrategia = new EstrategiaBalanceada();
 
-    public GeneradorPedidos(IProveedorDAO proveedorDAO, IPedidoDAO pedidoDAO) {
+    public GeneradorPedidos(IProveedorDAO proveedorDAO, IPedidoDAO pedidoDAO, ReposicionService reposicion) {
         this.proveedorDAO = proveedorDAO;
         this.pedidoDAO = pedidoDAO;
+        this.reposicion = reposicion;
     }
 
     public IEstrategiaProveedor getEstrategia() {
@@ -34,15 +36,18 @@ public class GeneradorPedidos {
     }
 
     /**
-     * Pedido One-Click: elige el proveedor con la estrategia activa y guarda el pedido en estado
-     * GENERADO. El mensaje al proveedor y el paso a ENVIADO quedan del lado del controlador y del State.
+     * Pedido One-Click: calcula la cantidad sugerida, elige el proveedor con la estrategia activa y
+     * guarda el pedido en estado GENERADO. El mensaje al proveedor y el paso a ENVIADO quedan del
+     * lado del controlador y del State.
      *
-     * @throws IllegalArgumentException si la cantidad no es positiva
-     * @throws java.util.NoSuchElementException si ningún proveedor ofrece el producto
+     * @throws java.util.NoSuchElementException si el producto no existe o ningún proveedor lo ofrece
+     * @throws IllegalStateException si el stock, sumado a lo ya pedido, supera el punto de pedido
      */
-    public PedidoReposicion ejecutarConexionOneClick(String sku, int cantidad) {
-        if (cantidad <= 0) {
-            throw new IllegalArgumentException("La cantidad debe ser mayor a cero");
+    public PedidoReposicion ejecutarConexionOneClick(String sku) {
+        int cantidad = reposicion.cantidadSugerida(sku);
+        if (cantidad == 0) {
+            throw new IllegalStateException("No hace falta reponer " + sku
+                    + ": el stock más lo ya pedido supera el punto de pedido");
         }
         Proveedor proveedor = estrategia.seleccionar(sku, proveedorDAO.listarPorProducto(sku));
         PedidoReposicion pedido = new PedidoReposicion(sku, proveedor.getId(), cantidad);
