@@ -1,8 +1,12 @@
 import Encabezado from './components/Encabezado.jsx'
 import Panel from './components/Panel.jsx'
+import TablaStock from './components/TablaStock.jsx'
+import { useProductos } from './hooks/useProductos.js'
 import './App.css'
 
 function App() {
+  const { productos, cargando, error, recargar } = useProductos()
+
   return (
     <div className="app">
       <Encabezado />
@@ -12,7 +16,7 @@ function App() {
           descripcion="Stock actual y umbral crítico de cada producto"
           className="contenido__tabla"
         >
-          <p className="panel__vacio">Sin productos para mostrar.</p>
+          <TablaStock productos={productos} cargando={cargando} error={error} alReintentar={recargar} />
         </Panel>
 
         <aside className="contenido__controles">
