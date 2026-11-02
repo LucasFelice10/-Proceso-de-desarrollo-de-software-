@@ -1,0 +1,74 @@
+.estrategia {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.estrategia__opciones {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.estrategia__opcion {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-areas:
+    'radio nombre estado'
+    'radio criterio estado';
+  align-items: center;
+  column-gap: 0.75rem;
+  padding: 0.7rem 0.9rem;
+  background: var(--color-superficie-alta);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-chico);
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.estrategia__opcion:hover {
+  border-color: var(--color-primario);
+}
+
+.estrategia__opcion--activa {
+  background: var(--color-primario-suave);
+  border-color: var(--color-primario);
+}
+
+.estrategia__opciones:disabled .estrategia__opcion {
+  cursor: progress;
+}
+
+.estrategia__opcion input {
+  grid-area: radio;
+  width: 1rem;
+  height: 1rem;
+  margin: 0;
+  accent-color: var(--color-primario);
+}
+
+.estrategia__nombre {
+  grid-area: nombre;
+  font-weight: 600;
+}
+
+.estrategia__criterio {
+  grid-area: criterio;
+  font-size: 0.85rem;
+  color: var(--color-texto-suave);
+}
+
+.estrategia__estado {
+  grid-area: estado;
+  padding: 0.1rem 0.55rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-primario);
+  border: 1px solid var(--color-primario);
+  border-radius: 999px;
+}

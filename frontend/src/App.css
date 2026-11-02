@@ -1,0 +1,42 @@
+.app {
+  min-height: 100vh;
+}
+
+.contenido {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 21rem;
+  grid-template-areas:
+    'tabla controles'
+    'pedidos pedidos';
+  align-items: start;
+  gap: 1.25rem;
+  max-width: 88rem;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+.contenido__tabla {
+  grid-area: tabla;
+}
+
+.contenido__controles {
+  grid-area: controles;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.contenido__pedidos {
+  grid-area: pedidos;
+}
+
+@media (max-width: 960px) {
+  .contenido {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      'tabla'
+      'controles'
+      'pedidos';
+    padding: 1rem;
+  }
+}

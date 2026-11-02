@@ -1,0 +1,61 @@
+.venta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.venta__campo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.venta__etiqueta {
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-texto-suave);
+}
+
+.venta__campo select,
+.venta__campo input {
+  width: 100%;
+  padding: 0.5rem 0.7rem;
+  background: var(--color-fondo);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-chico);
+}
+
+.venta__campo select:focus,
+.venta__campo input:focus {
+  border-color: var(--color-primario);
+}
+
+.venta__campo input {
+  font-variant-numeric: tabular-nums;
+}
+
+.venta__resultado {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.75rem 1rem;
+  font-size: 0.9rem;
+  background: var(--color-exito-fondo);
+  border: 1px solid var(--color-exito);
+  border-radius: var(--radio-chico);
+}
+
+.venta__alerta {
+  font-weight: 600;
+  color: var(--color-exito);
+}
+
+.venta__resultado--alerta {
+  background: var(--color-alerta-fondo);
+  border-color: var(--color-alerta);
+}
+
+.venta__resultado--alerta .venta__alerta {
+  color: var(--color-alerta);
+}

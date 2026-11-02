@@ -1,0 +1,117 @@
+.tabla {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.tabla th {
+  padding: 0.6rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-align: left;
+  text-transform: uppercase;
+  color: var(--color-texto-suave);
+  border-bottom: 1px solid var(--color-borde);
+  white-space: nowrap;
+}
+
+.tabla td {
+  padding: 0.7rem 0.75rem;
+  border-bottom: 1px solid var(--color-borde);
+}
+
+.tabla tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.tabla tbody tr:hover td {
+  background: var(--color-primario-suave);
+}
+
+.tabla__numero {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.tabla th.tabla__numero {
+  text-align: right;
+}
+
+.tabla .tabla__accion {
+  width: 1%;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.tabla__codigo {
+  font-family: var(--fuente-mono);
+  font-size: 0.875rem;
+  color: var(--color-primario);
+  white-space: nowrap;
+}
+
+.tabla__destacado {
+  font-weight: 700;
+}
+
+.tabla__celda--actualizada {
+  animation: celda-actualizada 0.9s ease-out;
+}
+
+.tabla tbody tr.tabla__fila--alerta {
+  background: var(--color-alerta-fondo);
+  animation: fila-alerta-entrada 0.6s ease-out, fila-alerta-pulso 1.4s ease-in-out 0.6s 3;
+}
+
+.tabla tbody tr.tabla__fila--alerta:hover td {
+  background: rgba(248, 113, 113, 0.1);
+}
+
+.tabla tbody tr.tabla__fila--alerta td:first-child {
+  box-shadow: inset 3px 0 0 var(--color-alerta);
+}
+
+.tabla tbody tr.tabla__fila--alerta .tabla__destacado {
+  color: var(--color-alerta);
+}
+
+.tabla__etiqueta-alerta {
+  display: inline-block;
+  margin-left: 0.6rem;
+  padding: 0.05rem 0.5rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  vertical-align: middle;
+  color: var(--color-alerta);
+  border: 1px solid var(--color-alerta);
+  border-radius: 999px;
+}
+
+@keyframes celda-actualizada {
+  from {
+    color: var(--color-primario);
+    text-shadow: 0 0 12px var(--color-primario);
+  }
+}
+
+@keyframes fila-alerta-entrada {
+  from {
+    background: transparent;
+  }
+}
+
+@keyframes fila-alerta-pulso {
+  50% {
+    background: rgba(248, 113, 113, 0.32);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tabla__celda--actualizada,
+  .tabla tbody tr.tabla__fila--alerta {
+    animation: none;
+  }
+}

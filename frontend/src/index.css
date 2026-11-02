@@ -1,0 +1,129 @@
+:root {
+  --color-fondo: #0a1424;
+  --color-fondo-claro: #10223d;
+  --color-superficie: #112038;
+  --color-superficie-alta: #172b4b;
+  --color-borde: #1f3a60;
+  --color-texto: #e3eefb;
+  --color-texto-suave: #8ba5c6;
+  --color-primario: #38bdf8;
+  --color-primario-fuerte: #0ea5e9;
+  --color-primario-suave: rgba(56, 189, 248, 0.14);
+  --color-alerta: #f87171;
+  --color-alerta-fondo: rgba(248, 113, 113, 0.14);
+  --color-advertencia: #fbbf24;
+  --color-advertencia-fondo: rgba(251, 191, 36, 0.14);
+  --color-exito: #34d399;
+  --color-exito-fondo: rgba(52, 211, 153, 0.14);
+
+  --fuente-base: system-ui, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --fuente-mono: ui-monospace, 'Cascadia Mono', Consolas, monospace;
+
+  --radio: 12px;
+  --radio-chico: 6px;
+  --sombra: 0 8px 24px rgba(2, 8, 20, 0.45);
+  --espacio: 1rem;
+
+  color-scheme: dark;
+  font-family: var(--fuente-base);
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--color-texto);
+  background: var(--color-fondo);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Modo presentación: todo el layout está en rem, así que escala con la letra base. */
+:root.presentacion {
+  font-size: 19px;
+}
+
+.presentacion .panel__descripcion {
+  display: none;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: radial-gradient(circle at top, var(--color-fondo-claro), var(--color-fondo) 60%) fixed;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+button,
+input,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-primario);
+  outline-offset: 2px;
+}
+
+.visualmente-oculto {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.boton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  color: var(--color-fondo);
+  background: var(--color-primario);
+  border: 1px solid var(--color-primario);
+  border-radius: var(--radio-chico);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.boton:hover:not(:disabled) {
+  background: var(--color-primario-fuerte);
+  border-color: var(--color-primario-fuerte);
+}
+
+.boton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.boton--chico {
+  padding: 0.3rem 0.75rem;
+  font-size: 0.85rem;
+}
+
+a.boton {
+  text-decoration: none;
+}
+
+.boton--secundario {
+  color: var(--color-texto);
+  background: transparent;
+  border-color: var(--color-borde);
+}
+
+.boton--secundario:hover:not(:disabled) {
+  background: var(--color-superficie-alta);
+  border-color: var(--color-primario);
+}

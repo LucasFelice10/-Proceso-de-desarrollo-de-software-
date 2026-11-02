@@ -1,0 +1,55 @@
+.one-click__datos {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin: 0 0 1.25rem;
+}
+
+.one-click__datos div {
+  padding: 0.7rem 0.85rem;
+  background: var(--color-superficie-alta);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-chico);
+}
+
+.one-click__datos dt {
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-texto-suave);
+}
+
+.one-click__datos dd {
+  margin: 0.2rem 0 0;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.one-click__etiqueta {
+  margin-bottom: 0.4rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-texto-suave);
+}
+
+.one-click__mensaje {
+  margin: 0;
+  padding: 0.9rem 1rem;
+  line-height: 1.55;
+  background: var(--color-fondo);
+  border-left: 3px solid var(--color-primario);
+  border-radius: var(--radio-chico);
+}
+
+.one-click__nota {
+  margin-top: 0.75rem;
+  font-size: 0.8rem;
+  color: var(--color-texto-suave);
+}
+
+@media (max-width: 520px) {
+  .one-click__datos {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
