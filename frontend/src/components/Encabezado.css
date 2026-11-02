@@ -18,6 +18,12 @@
   gap: 0.75rem;
 }
 
+.encabezado__controles {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
 .encabezado__logo {
   width: 2.25rem;
   height: 2.25rem;
@@ -54,5 +60,9 @@
 
   .encabezado__titulo {
     font-size: 1.05rem;
+  }
+
+  .encabezado__subtitulo {
+    display: none;
   }
 }

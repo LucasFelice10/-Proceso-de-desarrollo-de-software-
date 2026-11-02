@@ -19,16 +19,18 @@ function ordenar(a, b) {
   return b.id - a.id
 }
 
-function PanelPedidos({ datos, className }) {
+function PanelPedidos({ datos, presentacion, className }) {
   const { pedidos, proveedores, seguidos, cargando, error, recargar, enCurso, errorAccion, avanzar, simularDemora } =
     datos
   const [ocultarHistorial, setOcultarHistorial] = useState(false)
+  const sinHistorial = presentacion || ocultarHistorial
 
   const visibles = pedidos
-    .filter((p) => !ocultarHistorial || p.estado !== 'RECIBIDO' || seguidos.has(p.id))
+    .filter((p) => !sinHistorial || p.estado !== 'RECIBIDO' || seguidos.has(p.id))
     .sort(ordenar)
 
-  const opciones = (
+  // En presentación el historial siempre está oculto, así que la opción no se muestra.
+  const opciones = !presentacion && (
     <label className="pedidos__opcion">
       <input
         type="checkbox"

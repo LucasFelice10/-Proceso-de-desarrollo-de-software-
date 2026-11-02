@@ -1,7 +1,7 @@
 import IndicadorConexion from './IndicadorConexion.jsx'
 import './Encabezado.css'
 
-function Encabezado({ conectado }) {
+function Encabezado({ conectado, presentacion, alCambiarPresentacion }) {
   return (
     <header className="encabezado">
       <div className="encabezado__marca">
@@ -13,7 +13,17 @@ function Encabezado({ conectado }) {
           Nexus Software <span className="encabezado__subtitulo">- Gestión de Stock</span>
         </h1>
       </div>
-      <IndicadorConexion conectado={conectado} />
+      <div className="encabezado__controles">
+        <IndicadorConexion conectado={conectado} />
+        <button
+          type="button"
+          className="boton boton--chico boton--secundario"
+          aria-pressed={presentacion}
+          onClick={alCambiarPresentacion}
+        >
+          {presentacion ? 'Salir de presentación' : 'Modo presentación'}
+        </button>
+      </div>
     </header>
   )
 }

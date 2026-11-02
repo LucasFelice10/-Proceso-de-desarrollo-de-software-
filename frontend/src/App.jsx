@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import Encabezado from './components/Encabezado.jsx'
 import FormularioVenta from './components/FormularioVenta.jsx'
 import ModalOneClick from './components/ModalOneClick.jsx'
@@ -14,10 +15,19 @@ function App() {
   const { productos, cargando, error, recargar, conectado, actualizaciones } = useProductos()
   const pedidos = usePedidos()
   const oneClick = useOneClick(pedidos.recargar)
+  const [presentacion, setPresentacion] = useState(false)
+
+  useEffect(() => {
+    document.documentElement.classList.toggle('presentacion', presentacion)
+  }, [presentacion])
 
   return (
     <div className="app">
-      <Encabezado conectado={conectado} />
+      <Encabezado
+        conectado={conectado}
+        presentacion={presentacion}
+        alCambiarPresentacion={() => setPresentacion((anterior) => !anterior)}
+      />
       <main className="contenido">
         <Panel
           titulo="Monitoreo de stock"
@@ -43,7 +53,7 @@ function App() {
           </Panel>
         </aside>
 
-        <PanelPedidos datos={pedidos} className="contenido__pedidos" />
+        <PanelPedidos datos={pedidos} presentacion={presentacion} className="contenido__pedidos" />
       </main>
 
       {oneClick.solicitud && <ModalOneClick solicitud={oneClick.solicitud} alCerrar={oneClick.cerrar} />}

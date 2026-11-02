@@ -33,6 +33,15 @@
   -webkit-font-smoothing: antialiased;
 }
 
+/* Modo presentación: todo el layout está en rem, así que escala con la letra base. */
+:root.presentacion {
+  font-size: 19px;
+}
+
+.presentacion .panel__descripcion {
+  display: none;
+}
+
 *,
 *::before,
 *::after {
