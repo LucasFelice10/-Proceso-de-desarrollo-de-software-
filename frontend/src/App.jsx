@@ -1,11 +1,14 @@
 import Encabezado from './components/Encabezado.jsx'
+import ModalOneClick from './components/ModalOneClick.jsx'
 import Panel from './components/Panel.jsx'
 import TablaStock from './components/TablaStock.jsx'
+import { useOneClick } from './hooks/useOneClick.js'
 import { useProductos } from './hooks/useProductos.js'
 import './App.css'
 
 function App() {
   const { productos, cargando, error, recargar, conectado, actualizaciones } = useProductos()
+  const oneClick = useOneClick()
 
   return (
     <div className="app">
@@ -22,6 +25,7 @@ function App() {
             error={error}
             alReintentar={recargar}
             actualizaciones={actualizaciones}
+            alPedirOneClick={oneClick.pedir}
           />
         </Panel>
 
@@ -42,6 +46,8 @@ function App() {
           <p className="panel__vacio">Sin pedidos para mostrar.</p>
         </Panel>
       </main>
+
+      {oneClick.solicitud && <ModalOneClick solicitud={oneClick.solicitud} alCerrar={oneClick.cerrar} />}
     </div>
   )
 }

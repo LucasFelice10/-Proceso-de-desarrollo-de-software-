@@ -38,6 +38,12 @@
   text-align: right;
 }
 
+.tabla .tabla__accion {
+  width: 1%;
+  text-align: right;
+  white-space: nowrap;
+}
+
 .tabla__codigo {
   font-family: var(--fuente-mono);
   font-size: 0.875rem;

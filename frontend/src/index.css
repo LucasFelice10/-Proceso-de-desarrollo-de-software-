@@ -90,6 +90,15 @@ select {
   cursor: not-allowed;
 }
 
+.boton--chico {
+  padding: 0.3rem 0.75rem;
+  font-size: 0.85rem;
+}
+
+a.boton {
+  text-decoration: none;
+}
+
 .boton--secundario {
   color: var(--color-texto);
   background: transparent;

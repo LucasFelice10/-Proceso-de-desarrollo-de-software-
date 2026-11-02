@@ -1,7 +1,7 @@
 import MensajeError from './MensajeError.jsx'
 import './Tabla.css'
 
-function TablaStock({ productos, cargando, error, alReintentar, actualizaciones }) {
+function TablaStock({ productos, cargando, error, alReintentar, actualizaciones, alPedirOneClick }) {
   if (error) {
     return <MensajeError mensaje={error} alReintentar={alReintentar} />
   }
@@ -20,6 +20,7 @@ function TablaStock({ productos, cargando, error, alReintentar, actualizaciones 
           <th>Producto</th>
           <th className="tabla__numero">Stock actual</th>
           <th className="tabla__numero">Umbral crítico</th>
+          <th className="tabla__accion">Reposición</th>
         </tr>
       </thead>
       <tbody>
@@ -41,6 +42,15 @@ function TablaStock({ productos, cargando, error, alReintentar, actualizaciones 
                 {producto.stockActual}
               </td>
               <td className="tabla__numero">{producto.umbralCritico}</td>
+              <td className="tabla__accion">
+                <button
+                  type="button"
+                  className={`boton boton--chico${enAlerta ? '' : ' boton--secundario'}`}
+                  onClick={() => alPedirOneClick(producto)}
+                >
+                  One-Click
+                </button>
+              </td>
             </tr>
           )
         })}
