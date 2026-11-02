@@ -1,6 +1,7 @@
+import IndicadorConexion from './IndicadorConexion.jsx'
 import './Encabezado.css'
 
-function Encabezado() {
+function Encabezado({ conectado }) {
   return (
     <header className="encabezado">
       <div className="encabezado__marca">
@@ -12,6 +13,7 @@ function Encabezado() {
           Nexus Software <span className="encabezado__subtitulo">- Gestión de Stock</span>
         </h1>
       </div>
+      <IndicadorConexion conectado={conectado} />
     </header>
   )
 }

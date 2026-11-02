@@ -1,7 +1,9 @@
+import { VENTAS_AUTOMATICAS_MOCK } from './config.js'
 import { ErrorApi, mensajeGenerico } from './ErrorApi.js'
 import { HISTORIAL_ENTREGAS, PRODUCTOS, PROVEEDORES, REFERENCIA_ROP } from './datosMock.js'
 
 const DEMORA_RED_MS = 150
+const INTERVALO_VENTAS_MS = 2000
 const MS_POR_DIA = 24 * 60 * 60 * 1000
 const DIAS_DEMORA = 2
 const DIAS_COBERTURA = 7
@@ -30,6 +32,7 @@ const pedidos = HISTORIAL_ENTREGAS.map(([sku, proveedorId, cantidad, hace, demor
 let siguienteId = pedidos.length + 1
 let estrategia = 'BALANCEADA'
 const suscriptores = new Set()
+let temporizadorVentas = null
 
 // Devuelve copias para que los componentes no modifiquen el estado del mock.
 async function simularRed(operacion) {
@@ -60,6 +63,24 @@ function notificar(producto) {
     if (stockActual <= umbralCritico) {
       suscriptor.alAlertar?.({ sku, nombre, stockActual, umbralCritico })
     }
+  }
+}
+
+function vender(producto, cantidad) {
+  const stockAnterior = producto.stockActual
+  producto.stockActual -= cantidad
+  notificar(producto)
+  const umbralCruzado =
+    stockAnterior > producto.umbralCritico && producto.stockActual <= producto.umbralCritico
+  return { sku: producto.sku, cantidad, stockActual: producto.stockActual, umbralCruzado, alertaDisparada: umbralCruzado }
+}
+
+// Vende entre el 2% y el 6% del stock de un producto al azar: baja rápido sin llegar a cero.
+function venderAlAzar() {
+  const producto = productos[Math.floor(Math.random() * productos.length)]
+  const cantidad = Math.max(1, Math.round(producto.stockActual * (0.02 + Math.random() * 0.04)))
+  if (producto.stockActual >= cantidad) {
+    vender(producto, cantidad)
   }
 }
 
@@ -140,12 +161,7 @@ export const registrarVenta = (sku, cantidad) =>
         400,
       )
     }
-    const stockAnterior = producto.stockActual
-    producto.stockActual -= cantidad
-    notificar(producto)
-    const umbralCruzado =
-      stockAnterior > producto.umbralCritico && producto.stockActual <= producto.umbralCritico
-    return { sku, cantidad, stockActual: producto.stockActual, umbralCruzado, alertaDisparada: umbralCruzado }
+    return vender(producto, cantidad)
   })
 
 export const cambiarEstrategia = (perfil) =>
@@ -232,5 +248,14 @@ export function suscribirEventos(manejadores) {
       manejadores.alCambiarConexion?.(true)
     }
   }, DEMORA_RED_MS)
-  return () => suscriptores.delete(manejadores)
+  if (VENTAS_AUTOMATICAS_MOCK && !temporizadorVentas) {
+    temporizadorVentas = setInterval(venderAlAzar, INTERVALO_VENTAS_MS)
+  }
+  return () => {
+    suscriptores.delete(manejadores)
+    if (suscriptores.size === 0) {
+      clearInterval(temporizadorVentas)
+      temporizadorVentas = null
+    }
+  }
 }

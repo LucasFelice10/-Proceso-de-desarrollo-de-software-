@@ -5,18 +5,24 @@ import { useProductos } from './hooks/useProductos.js'
 import './App.css'
 
 function App() {
-  const { productos, cargando, error, recargar } = useProductos()
+  const { productos, cargando, error, recargar, conectado, actualizaciones } = useProductos()
 
   return (
     <div className="app">
-      <Encabezado />
+      <Encabezado conectado={conectado} />
       <main className="contenido">
         <Panel
           titulo="Monitoreo de stock"
           descripcion="Stock actual y umbral crítico de cada producto"
           className="contenido__tabla"
         >
-          <TablaStock productos={productos} cargando={cargando} error={error} alReintentar={recargar} />
+          <TablaStock
+            productos={productos}
+            cargando={cargando}
+            error={error}
+            alReintentar={recargar}
+            actualizaciones={actualizaciones}
+          />
         </Panel>
 
         <aside className="contenido__controles">
