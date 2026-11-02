@@ -1,0 +1,58 @@
+.encabezado {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--espacio);
+  padding: 0.85rem 1.5rem;
+  background: rgba(10, 20, 36, 0.85);
+  border-bottom: 1px solid var(--color-borde);
+  backdrop-filter: blur(8px);
+}
+
+.encabezado__marca {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.encabezado__logo {
+  width: 2.25rem;
+  height: 2.25rem;
+  flex-shrink: 0;
+}
+
+.encabezado__logo rect {
+  fill: var(--color-superficie-alta);
+}
+
+.encabezado__logo path {
+  fill: none;
+  stroke: var(--color-primario);
+  stroke-width: 7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.encabezado__titulo {
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.encabezado__subtitulo {
+  font-weight: 400;
+  color: var(--color-texto-suave);
+}
+
+@media (max-width: 600px) {
+  .encabezado {
+    padding: 0.75rem 1rem;
+  }
+
+  .encabezado__titulo {
+    font-size: 1.05rem;
+  }
+}
