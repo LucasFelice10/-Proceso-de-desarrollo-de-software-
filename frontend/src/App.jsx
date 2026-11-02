@@ -1,6 +1,7 @@
 import Encabezado from './components/Encabezado.jsx'
 import ModalOneClick from './components/ModalOneClick.jsx'
 import Panel from './components/Panel.jsx'
+import SelectorEstrategia from './components/SelectorEstrategia.jsx'
 import TablaStock from './components/TablaStock.jsx'
 import { useOneClick } from './hooks/useOneClick.js'
 import { useProductos } from './hooks/useProductos.js'
@@ -31,7 +32,7 @@ function App() {
 
         <aside className="contenido__controles">
           <Panel titulo="Estrategia de proveedor" descripcion="Criterio para elegir proveedor en el One-Click">
-            <p className="panel__vacio">Sin perfiles cargados.</p>
+            <SelectorEstrategia />
           </Panel>
           <Panel titulo="Registrar venta" descripcion="Descuenta stock y dispara la alerta si cruza el umbral">
             <p className="panel__vacio">Sin productos para vender.</p>
