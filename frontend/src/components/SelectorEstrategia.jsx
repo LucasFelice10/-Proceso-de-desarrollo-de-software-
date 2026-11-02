@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { cambiarEstrategia } from '../api'
 import MensajeError from './MensajeError.jsx'
 import './SelectorEstrategia.css'
@@ -9,13 +9,24 @@ const PERFILES = [
   { perfil: 'BALANCEADA', nombre: 'Balanceada', criterio: '60% precio y 40% velocidad' },
 ]
 
-// El back arranca con esta estrategia y no tiene un GET para consultarla.
+// El back no tiene un GET de la estrategia: al cargar se manda esta para que back y pantalla coincidan.
 const PERFIL_INICIAL = 'BALANCEADA'
 
 function SelectorEstrategia() {
   const [activa, setActiva] = useState(PERFIL_INICIAL)
-  const [pendiente, setPendiente] = useState(null)
+  const [pendiente, setPendiente] = useState(PERFIL_INICIAL)
   const [error, setError] = useState(null)
+
+  useEffect(() => {
+    let vigente = true
+    cambiarEstrategia(PERFIL_INICIAL)
+      .then((respuesta) => vigente && setActiva(respuesta.perfil))
+      .catch((e) => vigente && setError(e.message))
+      .finally(() => vigente && setPendiente(null))
+    return () => {
+      vigente = false
+    }
+  }, [])
 
   const cambiar = async (perfil) => {
     if (perfil === activa || pendiente) {
