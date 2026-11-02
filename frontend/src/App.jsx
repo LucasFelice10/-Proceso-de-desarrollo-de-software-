@@ -1,15 +1,18 @@
 import Encabezado from './components/Encabezado.jsx'
 import ModalOneClick from './components/ModalOneClick.jsx'
 import Panel from './components/Panel.jsx'
+import PanelPedidos from './components/PanelPedidos.jsx'
 import SelectorEstrategia from './components/SelectorEstrategia.jsx'
 import TablaStock from './components/TablaStock.jsx'
 import { useOneClick } from './hooks/useOneClick.js'
+import { usePedidos } from './hooks/usePedidos.js'
 import { useProductos } from './hooks/useProductos.js'
 import './App.css'
 
 function App() {
   const { productos, cargando, error, recargar, conectado, actualizaciones } = useProductos()
-  const oneClick = useOneClick()
+  const pedidos = usePedidos()
+  const oneClick = useOneClick(pedidos.recargar)
 
   return (
     <div className="app">
@@ -39,13 +42,7 @@ function App() {
           </Panel>
         </aside>
 
-        <Panel
-          titulo="Pedidos de reposición"
-          descripcion="Ciclo de cada pedido: Enviado, Demorado y Recibido"
-          className="contenido__pedidos"
-        >
-          <p className="panel__vacio">Sin pedidos para mostrar.</p>
-        </Panel>
+        <PanelPedidos datos={pedidos} className="contenido__pedidos" />
       </main>
 
       {oneClick.solicitud && <ModalOneClick solicitud={oneClick.solicitud} alCerrar={oneClick.cerrar} />}

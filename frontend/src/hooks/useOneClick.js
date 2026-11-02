@@ -1,7 +1,7 @@
 import { useCallback, useRef, useState } from 'react'
 import { generarOneClick } from '../api'
 
-export function useOneClick() {
+export function useOneClick(alGenerar) {
   const [solicitud, setSolicitud] = useState(null)
   // Si el modal se cerró antes de que llegue la respuesta, la respuesta se descarta.
   const ultimaSolicitud = useRef(0)
@@ -11,6 +11,7 @@ export function useOneClick() {
     setSolicitud({ producto, cargando: true })
     try {
       const resultado = await generarOneClick(producto.sku)
+      alGenerar?.()
       if (ultimaSolicitud.current === id) {
         setSolicitud({ producto, cargando: false, resultado })
       }
@@ -19,7 +20,7 @@ export function useOneClick() {
         setSolicitud({ producto, cargando: false, error: e.message })
       }
     }
-  }, [])
+  }, [alGenerar])
 
   const cerrar = useCallback(() => {
     ultimaSolicitud.current++
