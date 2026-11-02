@@ -1,4 +1,5 @@
 import Encabezado from './components/Encabezado.jsx'
+import FormularioVenta from './components/FormularioVenta.jsx'
 import ModalOneClick from './components/ModalOneClick.jsx'
 import Panel from './components/Panel.jsx'
 import PanelPedidos from './components/PanelPedidos.jsx'
@@ -38,7 +39,7 @@ function App() {
             <SelectorEstrategia />
           </Panel>
           <Panel titulo="Registrar venta" descripcion="Descuenta stock y dispara la alerta si cruza el umbral">
-            <p className="panel__vacio">Sin productos para vender.</p>
+            <FormularioVenta productos={productos} />
           </Panel>
         </aside>
 
